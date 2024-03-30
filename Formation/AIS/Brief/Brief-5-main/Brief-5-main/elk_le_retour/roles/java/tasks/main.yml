@@ -1,0 +1,11 @@
+---
+#
+# Installing Java 8
+#
+
+# Add the Java repo
+- name: Install Java 8
+  apt:
+   name: openjdk-11-jdk
+   state: present
+   update_cache: yes

@@ -1,0 +1,79 @@
+---
+- name: Installation et configuration de Postfix avec MariaDB
+  hosts: machines
+  become: true
+  become_method: su
+
+  vars:
+    ansible_python_interpreter: /usr/bin/python
+
+  tasks:
+    - name: Installer les packages Postfix et MariaDB
+      apt:
+        name:
+          - postfix
+          - mariadb-server
+        state: present
+
+    - name: Définir le mot de passe root de MariaDB
+      debconf:
+        name: 'mariadb-server'
+        question: 'mariadb-server/root_password'
+        value: 'root_password'
+        vtype: password
+
+    - name: Définir le mot de passe root de MariaDB (confirmation)
+      debconf:
+        name: 'mariadb-server'
+        question: 'mariadb-server/root_password_again'
+        value: 'root_password'
+        vtype: password
+
+    - name: Redémarrer le service MariaDB
+      service:
+        name: mysql
+        state: restarted
+        enabled: true
+
+    - name: Créer la base de données pour Postfix
+      mysql_db:
+        name: postfix
+        state: present
+        login_user: root
+        login_password: root_password
+
+    - name: Créer l'utilisateur pour Postfix
+      mysql_user:
+        name: postfix_user
+        password: 'user_password'
+        priv: "postfix.*:ALL"
+        host: localhost
+        login_user: root
+        login_password: root_password
+
+    - name: Install MySQL module for Python 2.7
+      pip:
+        name:
+          - python-pip
+          - python-dev
+          - libmysqlclient-dev
+        state: present
+
+    - name: Install PyMySQL module
+      pip:
+        name: PyMySQL
+        state: present
+
+    - name: Copier le fichier de configuration main.cf
+      template:
+        src: main.cf
+        dest: /etc/postfix/main.cf
+        owner: root
+        group: root
+        mode: '0644'
+
+    - name: Redémarrer le service Postfix
+      service:
+        name: postfix
+        state: restarted
+        enabled: true

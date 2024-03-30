@@ -1,0 +1,41 @@
+---
+- name: Déploiement de Jitsi
+  hosts: all
+  become: yes
+  become_method: su
+
+  tasks:
+     - name: Installer Paquets
+       apt:
+        name:
+          - apt-transport-https
+          - gnupg
+        state: present
+
+     - name: Créer fichier Sources
+       shell: echo 'deb https://download.jitsi.org/ stable/' >> /etc/apt/sources.list.d/jitsi-stable.list
+
+     - name: Add specified repository into sources list
+       shell: wget -qO -  https://download.jitsi.org/jitsi-key.gpg.key | apt-key add -
+       args:
+         warn: false
+
+     - name: apt update
+       shell: apt update
+
+     - name: echo 1
+       shell: echo "jitsi-videobridge jitsi-videobridge/jvb-hostname string 172.16.20.130" | debconf-set-selections
+
+     - name: echo 2
+       shell: echo "jitsi-meet jitsi-meet/cert-choice select Self-signed certificate will be generated" | debconf-set-selections
+
+     - name: echo 3
+       shell: echo "jitsi-meet jitsi-meet/jaas-choice select no" | debconf-set-selections
+
+     - name: echo 4
+       shell: export DEBIAN_FRONTEND=noninteractive
+
+     - name: Installer jitsi-meet
+       apt:
+        name: jitsi-meet
+        state: present

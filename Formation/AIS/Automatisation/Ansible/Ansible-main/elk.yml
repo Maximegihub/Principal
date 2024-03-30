@@ -1,0 +1,97 @@
+---
+- name: Install Java JDK
+  hosts: your_target_hosts
+  become: true
+  tasks:
+    - name: Update system packages
+      apt:
+        update_cache: yes
+      become: true
+
+    - name: Install Java JDK
+      apt:
+        name: openjdk-11-jdk
+        state: present
+      become: true
+
+- name: Install and Configure Elasticsearch and Kibana
+  hosts: your_target_hosts
+  become: true
+  tasks:
+    - name: Import Elasticsearch GPG key
+      apt_key:
+        url: https://artifacts.elastic.co/GPG-KEY-elasticsearch
+        state: present
+
+    - name: Install apt-transport-https
+      apt:
+        name: apt-transport-https
+        state: present
+
+    - name: Add Elasticsearch repository
+      apt_repository:
+        repo: "deb [signed-by=/usr/share/keyrings/elasticsearch-keyring.gpg] https://artifacts.elastic.co/packages/8.x/apt stable main"
+        state: present
+
+    - name: Install Elasticsearch
+      apt:
+        name: elasticsearch
+        state: present
+      become: true
+
+    - name: Configure Elasticsearch
+      lineinfile:
+        path: /etc/elasticsearch/elasticsearch.yml
+        regexp: '^network.host:'
+        line: 'network.host: localhost'
+      become: true
+
+    - name: Start and Enable Elasticsearch
+      service:
+        name: elasticsearch
+        state: started
+        enabled: yes
+      become: true
+
+    - name: Wait for Elasticsearch to start
+      uri:
+        url: "http://localhost:9200"
+        return_content: yes
+      register: elasticsearch_response
+      until: "'You Know, for Search' in elasticsearch_response.content"
+      retries: 10
+      delay: 5
+
+    - name: Install Kibana
+      apt:
+        name: kibana
+        state: present
+      become: true
+
+    - name: Configure Kibana
+      lineinfile:
+        path: /etc/kibana/kibana.yml
+        regexp: '^server.port:'
+        line: 'server.port: 5601'
+      become: true
+
+    - name: Enable remote Kibana access
+      lineinfile:
+        path: /etc/kibana/kibana.yml
+        regexp: '^server.host:'
+        line: 'server.host: "0.0.0.0"'
+      become: true
+
+    - name: Set Elasticsearch hosts for Kibana
+      lineinfile:
+        path: /etc/kibana/kibana.yml
+        regexp: '^elasticsearch.hosts:'
+        line: 'elasticsearch.hosts: ["http://localhost:9200"]'
+      become: true
+
+    - name: Start and Enable Kibana
+      service:
+        name: kibana
+        state: started
+        enabled: yes
+      become: true

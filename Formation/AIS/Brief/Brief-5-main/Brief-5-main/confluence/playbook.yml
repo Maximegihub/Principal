@@ -1,0 +1,81 @@
+---
+- name: Déploiement de Confluence
+  hosts: machines
+  become: true
+  become_method: su
+  vars:
+    confluence_version: 8.1.1
+    confluence_install_path: /opt/confluence
+    confluence_home_path: /var/confluence-home
+    java_version: "11"
+    db_host: localhost
+    db_port: 5432
+    db_name: confluence
+    db_user: confluence_user
+    db_password: Erty123!
+
+  tasks:
+    
+    - name: Installer OpenJDK
+      apt:
+        name: openjdk-{{ java_version }}-jdk
+        state: present
+
+    - name: Installer PostgreSQL client
+      apt:
+        name: postgresql-client
+        state: present
+
+
+    - name: Créer le répertoire d'installation
+      file:
+        path: "{{ confluence_install_path }}"
+        state: directory
+        mode: '0755'
+
+    - name: Créer le répertoire Confluence home
+      file:
+        path: "{{ confluence_home_path }}"
+        state: directory
+        mode: '0755'
+
+    - name: Définir les permissions sur le répertoire Confluence home
+      file:
+        path: "{{ confluence_home_path }}"
+        mode: '0770'
+        recurse: yes
+
+    - name: Créer le répertoire d'installation
+      file:
+        path: "{{ confluence_install_path }}"
+        state: directory
+        mode: '0755'
+
+    - name: Télécharger Confluence
+      get_url:
+        url: "https://www.atlassian.com/software/confluence/downloads/binary/atlassian-confluence-{{ confluence_version }}.tar.gz"
+        dest: "{{ confluence_install_path }}/atlassian-confluence-{{ confluence_version }}.tar.gz"
+        mode: '0644'
+
+    - name: Extraire Confluence
+      unarchive:
+        src: "{{ confluence_install_path }}/atlassian-confluence-{{ confluence_version }}.tar.gz"
+        dest: "{{ confluence_install_path }}"
+        remote_src: yes
+        creates: "{{ confluence_install_path }}/atlassian-confluence-{{ confluence_version }}/bin/setenv.sh"
+
+    - name: Configuration de l'environnement
+      blockinfile:
+        path: "{{ confluence_install_path }}/atlassian-confluence-{{ confluence_version }}/bin/setenv.sh"
+        block: |
+          export CATALINA_OPTS="-Xms2g -Xmx2g -Datlassian.plugins.enable.wait=300"
+          export CATALINA_OPTS="$CATALINA_OPTS -Dconfluence.home={{ confluence_home_path }}"
+          export CATALINA_OPTS="$CATALINA_OPTS -Djdbc.driver=org.postgresql.Driver"
+          export CATALINA_OPTS="$CATALINA_OPTS -Djdbc.url=jdbc:postgresql://{{ db_host }}:{{ db_port }}/{{ db_name }}"
+          export CATALINA_OPTS="$CATALINA_OPTS -Djdbc.user={{ db_user }}"
+          export CATALINA_OPTS="$CATALINA_OPTS -Djdbc.password={{ db_password }}"
+
+    - name: Démarrer Confluence
+      command: "{{ confluence_install_path }}/atlassian-confluence-{{ confluence_version }}/bin/start-confluence.sh"
+   
+    

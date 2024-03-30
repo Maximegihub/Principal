@@ -1,0 +1,28 @@
+---
+# Playbook pour copier et restaurer une base de données MySQL à partir d'une sauvegarde
+
+hosts: sauv
+become: true
+become_method: su
+
+# Liste des tâches à exécuter
+tasks:
+  - name: Copier la sauvegarde sur la machine distante
+    copy:
+      src: "/ansible/sauvegarde/backup/db_backup.sql"  # Chemin local de la sauvegarde
+      dest: "/tmp/db_backup.sql"  # Emplacement sur la machine distante
+
+  - name: Restaurer la base de données MySQL
+    shell: "cat /tmp/db_backup.sql | mysql -u root -p`echo Erty123!` test_sauv"  # Commande pour restaurer la base de données
+    args:
+      executable: /bin/bash
+    delegate_to: srv-mariaDB  # Exécuter la commande sur l'hôte srv-mariaDB
+    become_user: root  # Exécuter la commande en tant que superutilisateur (root)
+    register: restore_result  # Enregistrer le résultat de l'exécution
+    #ignore_errors: yes  # Ignorer les erreurs pour continuer même si la restauration échoue
+
+  - name: Supprimer la sauvegarde temporaire
+    file:
+      path: "/tmp/db_backup.sql"  # Chemin de la sauvegarde temporaire
+      state: absent  # Supprimer le fichier
+    when: restore_result.rc == 0  # Condition : supprimer le fichier si la restauration a réussi

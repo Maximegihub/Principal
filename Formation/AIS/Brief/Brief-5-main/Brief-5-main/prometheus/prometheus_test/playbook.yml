@@ -1,0 +1,8 @@
+- name: Déploiement de Grafana et Prometheus
+  hosts: monitoring
+  become: true
+  become_method: su
+  roles:
+    # - role: geerlingguy.docker
+    - role: opstree_devops.grafana
+    - role: gotansible.prometheus

@@ -1,0 +1,21 @@
+{
+  "name": "tdg/color",
+  "title": "Color",
+  "description": "A single color block.",
+  "category": "design",
+  "keywords": [ "colors", "styles", "visual identity" ],
+  "parent": [ "tdg/colors" ],
+  "attributes": {
+    "hex":  {
+      "type": "string",
+      "default": ""
+    },
+    "label":  {
+      "type": "string",
+      "default": ""
+    }
+  },
+  "script": "file:../../../build/color-palette.min.js",
+  "editorStyle": "file:../../../build/styles-editor.min.css",
+  "style": "file:../../../build/styles-frontend.min.css"
+}

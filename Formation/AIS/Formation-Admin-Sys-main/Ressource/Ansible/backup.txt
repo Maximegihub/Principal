@@ -1,0 +1,46 @@
+---
+# Playbook pour sauvegarder une base de données MySQL et copier la sauvegarde vers une machine distante
+
+hosts: sauv
+become: yes
+become_user: root
+
+# Définir des variables pour la configuration de la sauvegarde
+vars:
+  db_name: test_sauv  # Nom de la base de données à sauvegarder
+  db_user: root  # Utilisateur MySQL pour se connecter à la base de données
+  db_password: Erty123!  # Mot de passe de l'utilisateur MySQL
+  backup_file_prefix: backup  # Préfixe du nom de fichier de sauvegarde
+  local_path: /sauvegarde/mysql  # Chemin local pour sauvegarder les fichiers
+  remote_path: /ansible/sauvegarde/backup/db_backup.sql  # Chemin distant pour copier la sauvegarde
+  current_date: "{{ ansible_date_time.date }}"  # Date actuelle au format YYYY-MM-DD
+  current_time: "{{ ansible_date_time.hour }}{{ ansible_date_time.minute }}{{ ansible_date_time.second }}"  # Heure actuelle au format HHMMSS
+
+# Liste des tâches à exécuter
+tasks:
+  - name: Create backup directory
+    file:
+      path: "{{ local_path }}"  # Chemin local pour la sauvegarde
+      state: directory  # Créer un répertoire
+      mode: '0755'  # Définir les permissions du répertoire
+
+  - name: Sauvegarder la base de données MySQL
+    shell: "mysqldump -u {{ db_user }} -p{{ db_password }} {{ db_name }} > {{ local_path }}/{{ backup_file_prefix }}{{ current_date }}_{{ current_time }}.sql"  # Commande pour effectuer la sauvegarde
+    args:
+      executable: /bin/bash
+    register: dump_result  # Enregistrer le résultat de l'exécution
+    ignore_errors: yes  # Ignorer les erreurs pour continuer même si la sauvegarde échoue
+
+  - name: Changer les permissions de la sauvegarde
+    file:
+       path: "{{ local_path }}/{{ backup_file_prefix }}{{ current_date }}_{{ current_time }}.sql"  # Chemin de la sauvegarde
+       owner: "root"  # Définir le propriétaire du fichier
+       group: "root"  # Définir le groupe du fichier
+       mode: '0644'  # Définir les permissions du fichier
+    when: dump_result.rc == 0  # Condition : changer les permissions si la sauvegarde a réussi
+
+  - name: Copy backup to remote machine
+    fetch:
+      src: "{{ local_path }}/{{ backup_file_prefix }}{{ current_date }}_{{ current_time }}.sql"  # Chemin de la sauvegarde locale
+      dest: "{{ remote_path }}"  # Chemin distant pour copier la sauvegarde
+      remote_src: yes  # Utiliser la source distante pour la copie

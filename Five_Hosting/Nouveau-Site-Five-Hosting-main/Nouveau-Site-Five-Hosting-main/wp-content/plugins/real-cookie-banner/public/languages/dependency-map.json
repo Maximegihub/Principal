@@ -1,0 +1,165 @@
+{
+ "chunk-config-tab-dashboard.lite.js": [
+  "177.lite.js",
+  "4.lite.js",
+  "223.lite.js",
+  "394.lite.js",
+  "327.lite.js",
+  "592.lite.js",
+  "379.lite.js"
+ ],
+ "chunk-config-tab-settings.lite.js": [
+  "177.lite.js",
+  "768.lite.js"
+ ],
+ "chunk-config-tab-scanner.lite.js": [
+  "177.lite.js",
+  "4.lite.js",
+  "223.lite.js",
+  "653.lite.js",
+  "394.lite.js",
+  "413.lite.js",
+  "673.lite.js",
+  "868.lite.js",
+  "185.lite.js",
+  "49.lite.js",
+  "574.lite.js",
+  "107.lite.js",
+  "3.lite.js"
+ ],
+ "chunk-config-tab-cookies.lite.js": [
+  "177.lite.js",
+  "4.lite.js",
+  "223.lite.js",
+  "653.lite.js",
+  "394.lite.js",
+  "413.lite.js",
+  "673.lite.js",
+  "868.lite.js",
+  "574.lite.js",
+  "107.lite.js",
+  "251.lite.js",
+  "718.lite.js"
+ ],
+ "chunk-config-tab-consent.lite.js": [
+  "177.lite.js",
+  "4.lite.js",
+  "223.lite.js",
+  "653.lite.js",
+  "413.lite.js",
+  "327.lite.js",
+  "673.lite.js",
+  "185.lite.js",
+  "574.lite.js",
+  "625.lite.js"
+ ],
+ "chunk-config-tab-blocker.lite.js": [
+  "177.lite.js",
+  "4.lite.js",
+  "223.lite.js",
+  "653.lite.js",
+  "394.lite.js",
+  "413.lite.js",
+  "868.lite.js",
+  "574.lite.js",
+  "107.lite.js",
+  "251.lite.js",
+  "478.lite.js"
+ ],
+ "chunk-config-tab-import.lite.js": [
+  "177.lite.js",
+  "4.lite.js",
+  "327.lite.js",
+  "49.lite.js",
+  "761.lite.js",
+  "357.lite.js"
+ ],
+ "chunk-config-tab-licensing.lite.js": [
+  "177.lite.js",
+  "4.lite.js",
+  "653.lite.js",
+  "322.lite.js"
+ ],
+ "chunk-config-tab-dashboard.pro.js": [
+  "177.pro.js",
+  "4.pro.js",
+  "223.pro.js",
+  "394.pro.js",
+  "327.pro.js",
+  "592.pro.js",
+  "379.pro.js"
+ ],
+ "chunk-config-tab-settings.pro.js": [
+  "177.pro.js",
+  "768.pro.js"
+ ],
+ "chunk-config-tab-scanner.pro.js": [
+  "177.pro.js",
+  "4.pro.js",
+  "223.pro.js",
+  "653.pro.js",
+  "394.pro.js",
+  "413.pro.js",
+  "673.pro.js",
+  "868.pro.js",
+  "185.pro.js",
+  "49.pro.js",
+  "664.pro.js",
+  "387.pro.js",
+  "3.pro.js"
+ ],
+ "chunk-config-tab-cookies.pro.js": [
+  "177.pro.js",
+  "4.pro.js",
+  "223.pro.js",
+  "653.pro.js",
+  "394.pro.js",
+  "413.pro.js",
+  "673.pro.js",
+  "868.pro.js",
+  "664.pro.js",
+  "387.pro.js",
+  "438.pro.js",
+  "718.pro.js"
+ ],
+ "chunk-config-tab-consent.pro.js": [
+  "177.pro.js",
+  "4.pro.js",
+  "223.pro.js",
+  "653.pro.js",
+  "413.pro.js",
+  "327.pro.js",
+  "673.pro.js",
+  "185.pro.js",
+  "78.pro.js",
+  "664.pro.js",
+  "625.pro.js"
+ ],
+ "chunk-config-tab-blocker.pro.js": [
+  "177.pro.js",
+  "4.pro.js",
+  "223.pro.js",
+  "653.pro.js",
+  "394.pro.js",
+  "413.pro.js",
+  "868.pro.js",
+  "664.pro.js",
+  "387.pro.js",
+  "438.pro.js",
+  "478.pro.js"
+ ],
+ "chunk-config-tab-import.pro.js": [
+  "177.pro.js",
+  "4.pro.js",
+  "327.pro.js",
+  "49.pro.js",
+  "761.pro.js",
+  "357.pro.js"
+ ],
+ "chunk-config-tab-licensing.pro.js": [
+  "177.pro.js",
+  "4.pro.js",
+  "653.pro.js",
+  "322.pro.js"
+ ]
+}

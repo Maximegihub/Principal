@@ -1,0 +1,5 @@
+# - src: geerlingguy.docker
+- src: opstree_devops.grafana
+  version: 2.1.0
+- src: gotansible.prometheus
+  version: 4.1.0

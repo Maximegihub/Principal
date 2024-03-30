@@ -1,0 +1,13 @@
+[elk]
+siel-ubuntu ansible_host=172.16.20.139
+
+
+[kibana]
+siel-ubuntu ansible_host=172.16.20.139
+
+
+[logstash]
+siel-ubuntu ansible_host=172.16.20.139
+
+[filebeat]
+siel-ubuntu ansible_host=172.16.20.139

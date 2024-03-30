@@ -1,0 +1,34 @@
+.elementor-widget-wdes-logo {
+  .wdes-logo {
+    .wdes-logo_img {
+      object-fit: contain;
+      width: auto;
+    }
+
+    &.wdes-logo-display-inline {
+      a.wdes-logo_link {
+        flex-flow: row;
+        align-items: center;
+      }
+    }
+
+    &.wdes-logo-display-block {
+      a.wdes-logo_link {
+        flex-flow: column;
+        justify-content: center;
+      }
+    }
+
+    &:not(.wdes-logo-type-text) {
+      a.wdes-logo_link {
+        display: flex;
+      }
+    }
+
+    // Text Logo Headings
+    .wdes-logo_text {
+      margin: 0;
+      font-size: 24px;
+    }
+  }
+}

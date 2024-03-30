@@ -1,0 +1,164 @@
+---
+
+- hosts: TARGET
+  become: yes
+  become_method: sudo
+
+  tasks:
+    - name: Install Apache web server
+      apt:
+        name: apache2
+        state: present
+
+    - name: Install PHP and required modules
+      apt:
+        name:
+          - php
+          - libapache2-mod-php
+          - php-iconv
+          - php-intl
+          - php-soap
+          - php-zip
+          - php-curl
+          - php-mbstring
+          - php-mysql
+          - php-gd
+          - php-xml
+          - php-pspell
+          - php-json
+          - php-xmlrpc
+          - unzip
+        state: present
+
+    - name: Initialisation de mariadb-server
+      ansible.builtin.expect:
+      command: mysql_secure_installation
+         responses:
+        'Enter current password for root': ''
+        'Switch to unix_socket authentication': 'n'
+        'Change the root password': 'y'
+        'New password': '1234'
+        'Re-enter new password': '1234'
+        'Remove anonymous users': 'y'
+        'Disallow root login remotely': 'n'
+        'Remove test database': 'y'
+        'Reload privilege tables now': 'y'
+ 
+    - name: Install MariaDB (MySQL)
+      apt:
+        name:
+          - mariadb-server
+          - mariadb-client
+        state: present
+
+    - name: Install PyMySQL for Python 3
+      apt:
+        name: python3-pip
+        state: present
+
+    - name: Install PyMySQL module
+      pip:
+        name: pymysql
+        executable: pip3
+        state: present
+
+    - name: Create Moodle database
+      mysql_db:
+	login_user: root
+	login_password: 1234
+        name: moodledb
+        state: present
+       # login_unix_socket: /var/run/mysqld/mysqld.sock
+
+    - name: Create Moodle database user
+      mysql_user:
+	login_user: root
+	login_password: 1234
+        name: moodle_user
+        password: bDSI1uBYvKuO
+        priv: 'moodle.*:ALL'
+       
+
+    - name: Download Moodle
+      get_url:
+        url: https://download.moodle.org/download.php/direct/stable400/moodle-4.0.1.zip
+        dest: /tmp/moodle-4.0.1.zip
+
+    - name: Extract Moodle
+      unarchive:
+        src: /tmp/moodle-4.0.1.zip
+        dest: /var/www/html/
+        remote_src: yes
+
+    - name: Set var directory permissions
+      file:
+        path: /var/www
+        state: directory
+        recurse: yes
+        owner: www-data
+        group: www-data
+        mode: '0755'
+
+    - name: Set Moodle directory permissions
+      file:
+        path: /var/www/html/moodle
+        state: directory
+        recurse: yes
+        owner: www-data
+        group: www-data
+        mode: '0755'
+
+    - name: Configure Moodle data directory
+      file:
+        path: /var/www/html/moodledata
+        state: directory
+        owner: www-data
+        group: www-data
+        mode: '0777'
+
+    - name: Création Fichier
+      file:
+        path: /etc/apache2/sites-available/moodle.conf
+        state: touch
+        owner: www-data
+        group: www-data
+        mode: 0777
+
+    - name: Ajouter des lignes au fichier
+      lineinfile:
+        dest: /etc/apache2/sites-available/moodle.conf
+        line: '<VirtualHost *:80>
+
+
+               ServerAdmin webmaster@172.16.20.114
+
+
+               ServerName 172.16.20.114
+
+               ServerAlias 172.16.20.114
+
+               DocumentRoot /var/www/html/moodle
+
+
+               <Directory /var/www/html/moodle/>
+
+                       Options Indexes FollowSymLinks
+
+                       AllowOverride All
+
+                       Require all granted
+
+               </Directory>
+
+
+               ErrorLog ${APACHE_LOG_DIR}/your-domain.com_error.log
+
+               CustomLog ${APACHE_LOG_DIR}/your-domain.com_access.log combined
+
+
+               </VirtualHost>'
+
+    - name: Supprimer un fichier
+      file:
+        state: absent
+        path: /var/www/html/index.html

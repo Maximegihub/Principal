@@ -1,0 +1,100 @@
+- hosts: prometheus
+  become: true
+  become_method: su
+  tasks:
+    - name: Créer un utilisateur et un groupe système Prometheus
+      group:
+        name: prometheus
+        state: present
+        system: yes
+
+    - name: Créer un utilisateur système Prometheus
+      user:
+        name: prometheus
+        group: prometheus
+        system: yes
+        shell: /sbin/nologin
+
+    - name: Créer des répertoires de configuration et de données
+      file:
+        path: "{{ item }}"
+        state: directory
+        owner: prometheus
+        group: prometheus
+        mode: "0755"
+      with_items:
+        - /var/lib/prometheus
+        - /etc/prometheus/rules
+        - /etc/prometheus/rules.d
+        - /etc/prometheus/files_sd
+
+    - name: Télécharger et extraire Prometheus
+      get_url:
+        url: "https://github.com/prometheus/prometheus/releases/download/v2.45.0/prometheus-2.45.0.linux-amd64.tar.gz"
+        dest: /tmp/prometheus.tar.gz
+
+
+    - name: extraire l'archive prometheus
+      unarchive:
+        src: /tmp/prometheus.tar.gz
+        dest: /tmp/
+        remote_src: yes
+        creates: "/tmp/prometheus-2.45.0.linux-amd64/"
+
+    - name: Déplacer les fichiers binaires Prometheus vers /usr/local/bin/
+      become: true
+      command: >
+          mv /tmp/prometheus-2.45.0.linx-amd64/prometheus
+             /tmp/prometheus-2.45.0.linux-amd64/promtool
+             /usr/local/bin/
+      args:
+        creates: /usr/local/bin/prometheus  # Cela évite d'exécuter la commande si les fichiers existent déjà.
+
+    - name: Déplacer le fichier de configuration Prometheus vers /etc/prometheus/
+      copy:
+        src: /ansible/monitoring/prometheus.yml
+        dest: /etc/prometheus/prometheus.yml
+        owner: prometheus
+        group: prometheus
+        mode: "0644"
+
+    - name: Déplacer les fichiers binaires Prometheus vers /usr/local/bin/
+      shell: "mv -i /tmp/prometheus-2.45.0.linux-amd64/consoles/* /etc/prometheus/ && mv -i /tmp/prometheus-2.45.0.linux-amd64/console_libraries/* /etc/prometheus/"
+      args:
+        creates: /etc/prometheus/consoles
+
+    - name: Modifier les autorisations du répertoire /etc/prometheus/
+      file:
+        path: /etc/prometheus/
+        state: directory
+        owner: prometheus
+        group: prometheus
+        mode: "0755"
+
+    - name: Copier le fichier prometheus.service vers /etc/systemd/system/
+      copy:
+        src: /ansible/monitoring/prometheus.service
+        dest: /etc/systemd/system/prometheus.service
+        owner: root
+        group: root
+        mode: '0644'
+
+
+    - name: Modifier les autorisations des répertoires de configuration
+      file:
+        path: "{{ item }}"
+        state: directory
+        owner: prometheus
+        group: prometheus
+        mode: "0755"
+      with_items:
+        - /etc/prometheus/rules
+        - /etc/prometheus/rules.d
+        - /etc/prometheus/files_sd
+
+    - name: Redémarrer le démon systemd et démarrer le service Prometheus
+      systemd:
+        name: prometheus
+        state: restarted
+        enabled: yes
+

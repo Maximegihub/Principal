@@ -1,0 +1,63 @@
+- name: Installation d'Elasticsearch sur Ubuntu 22.04
+  hosts: elk
+  become: true
+  become_method: su
+  tasks:
+    - name: Installation de Java
+      apt:
+        name: default-jre
+        state: present
+
+    - name: Installation de Java Development Kit (JDK)
+      apt:
+        name: default-jdk
+        state: present
+
+
+    - name: Ajout de la clé Elasticsearch GPG
+      apt_key:
+        url: https://artifacts.elastic.co/GPG-KEY-elasticsearch
+
+    - name: Install apt-transport-https
+      apt:
+        name: apt-transport-https
+        state: present
+
+    - name: Ajout du dépôt Elasticsearch à sources.list
+      apt_repository:
+        repo: "deb https://artifacts.elastic.co/packages/8.x/apt stable main"
+        state: present
+        filename: "elasticsearch-8.x"
+
+    - name: Mise à jour du cache apt
+      apt:
+        update_cache: yes
+
+    - name: Installation d'Elasticsearch
+      apt:
+        name: elasticsearch
+        state: present
+        update_cache: yes
+
+    - name: Modifier la configuration d'Elasticsearch
+      lineinfile:
+        path: /etc/elasticsearch/elasticsearch.yml
+        regexp: '^#?network.host:'
+        line: 'network.host: localhost'
+      notify: Redémarrer Elasticsearch
+
+  handlers:
+    - name: Redémarrer Elasticsearch
+      service:
+        name: elasticsearch
+        state: restarted
+        enabled: yes
+
+    - name: Autoriser l'accès à Elasticsearch sur le port 9200
+      ufw:
+        rule: allow
+        port: 9200
+
+    - name: Activer le pare-feu (UFW)
+      ufw:
+        state: enable

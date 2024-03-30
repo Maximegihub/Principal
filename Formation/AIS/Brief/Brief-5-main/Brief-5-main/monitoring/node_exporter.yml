@@ -1,0 +1,38 @@
+- hosts: node_exporter 
+  become: true
+  become_method: su
+  tasks:
+    - name: Créer un utilisateur pour node_exporter
+      user:
+        name: prometheus
+        state: present
+        shell: /bin/bash
+        createhome: yes
+
+    - name: Télécharger l'archive node_exporter
+      get_url:
+        url: "https://github.com/prometheus/node_exporter/releases/download/v1.6.1/node_exporter-1.6.1.linux-amd64.tar.gz"
+        dest: /tmp/node_exporter.tar.gz
+
+    - name: Extraire le fichier téléchargé et déplacer le binaire vers /usr/local/bin
+      unarchive:
+        src: "/tmp/node_exporter.tar.gz"
+        dest: /tmp/
+        remote_src: yes
+        creates: "/tmp/node_exporter-1.6.1.linux-amd64"
+
+    - name: Déplacer le fichier binaire node_exporter vers /usr/local/bin
+      command: "mv /tmp/node_exporter-1.6.1.linux-amd64/node_exporter /usr/local/bin/"
+      args:
+        creates: /usr/local/bin/node_exporter
+
+    - name: Transférer le fichier de service node_exporter vers la machine cible
+      copy:
+        src: "/ansible/monitoring/node_exporter.service"
+        dest: /etc/systemd/system/node_exporter.service
+
+    - name: Recharger systemd et démarrer le service node_exporter
+      systemd:
+        name: node_exporter
+        state: restarted
+        enabled: yes

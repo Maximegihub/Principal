@@ -1,0 +1,10 @@
+Commande discord Five Hosting : 
+
+Fermer un ticket discord : close ; delete ; transcript
+
+
+Five Hosting : Client ==> voir chercher client: rechercher client mail ou nom , tout les clients actif 
+Informations client: info , factures, produit, autre action, 
+
+Mdp : user ; fleche remove , password reset
+

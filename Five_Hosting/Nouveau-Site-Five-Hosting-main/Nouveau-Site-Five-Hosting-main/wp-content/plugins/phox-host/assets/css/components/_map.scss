@@ -1,0 +1,30 @@
+.elementor-widget-wdes_map {
+  .wdes-map .gm-style img {
+    max-width: none;
+  }
+
+  .wdes-map-message {
+    width: 100%;
+    height: 300px;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .wdes-map-message-random-map {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-image: url(../img/map-no-results.jpg);
+    background-repeat: no-repeat;
+    background-color: white;
+    background-size: cover;
+    filter: blur(3px) grayscale(1);
+    z-index: 1;
+  }
+
+  .wdes-map-message-text {
+    z-index: 2;
+  }
+}

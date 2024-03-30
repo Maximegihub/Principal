@@ -1,0 +1,55 @@
+- name: Installation de Kibana sur Ubuntu 22.04
+  hosts: kibana
+  become: true
+  become_method: su
+  tasks:
+    - name: Installation de Kibana
+      apt:
+        name: kibana
+        state: present
+        update_cache: yes
+
+    - name: Démarrage du service Kibana
+      service:
+        name: kibana
+        state: started
+        enabled: yes
+
+    - name: Installation de Nginx
+      apt:
+        name: nginx
+        state: present
+        update_cache: yes
+
+    - name: Création de l'utilisateur administratif Kibana sans hachage du mot de passe
+      lineinfile:
+         path: /etc/nginx/htpasswd.users
+         line: "kibanaadmin:Erty123!"
+         create: yes
+         state: present
+  
+
+    - name: Création du fichier de configuration Nginx pour Kibana
+      template:
+        src: kibana_nginx.conf.j2
+        dest: /etc/nginx/sites-available/kibana.ais-simplon-lil.cloudns.ph
+      notify: Redémarrer Nginx
+
+    - name: Création du lien symbolique vers le répertoire sites-enabled pour le fichier de configuration Nginx
+      file:
+        src: /etc/nginx/sites-available/kibana.ais-simplon-lil.cloudns.ph
+        dest: /etc/nginx/sites-enabled/kibana.ais-simplon-lil.cloudns.ph
+        state: link
+      notify: Redémarrer Nginx
+
+    - name: Ouvrir le port 5601 sur le pare-feu UFW
+      ufw:
+        rule: allow
+        port: 5601
+      become: true
+
+  handlers:
+    - name: Redémarrer Nginx
+      service:
+        name: nginx
+        state: restarted

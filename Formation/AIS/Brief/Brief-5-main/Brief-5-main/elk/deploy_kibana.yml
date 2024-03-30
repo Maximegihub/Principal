@@ -1,0 +1,49 @@
+- name: Install Java JDK
+  hosts: your_target_hosts
+  become: true
+  tasks:
+    - name: Update system packages
+      apt:
+        update_cache: yes
+      become: true
+
+- name: Install Kibana
+  hosts: machines
+  become: true
+  become_method: su 
+  tasks:
+    - name: Import Kibana GPG key
+      apt_key:
+        url: https://artifacts.elastic.co/GPG-KEY-elasticsearch
+        state: present
+
+    - name: Install apt-transport-https
+      apt:
+        name: apt-transport-https
+        state: present
+
+    - name: Add Kibana repository
+      apt_repository:
+        repo: "deb https://artifacts.elastic.co/packages/8.x/apt stable main"
+        state: present
+
+    - name: Install Kibana
+      apt:
+        name: kibana
+        state: present
+      become: true
+
+    - name: Transférer le fichier de configuration Kibana
+      copy:
+        src: /ansible/elk/kibana.yml
+        dest: /etc/kibana/kibana.yml
+        owner: kibana
+        group: kibana
+        mode: "0644"
+
+    - name: Start and Enable Kibana
+      service:
+        name: kibana
+        state: started
+        enabled: yes
+      become: true

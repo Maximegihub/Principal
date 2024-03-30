@@ -1,0 +1,83 @@
+server.port: 5601
+server.host: "0.0.0.0"
+
+elasticsearch.hosts: ["http://172.16.20.200:9200"]
+elasticsearch.username: "kibana_user"
+elasticsearch.password: "kibana_password"
+
+# Si vous utilisez SSL/TLS pour Elasticsearch, décommentez les lignes suivantes et spécifiez le chemin vers vos certificats :
+# elasticsearch.ssl.certificateAuthorities: ["/chemin/vers/le/fichier/ca.pem"]
+# elasticsearch.ssl.verificationMode: full
+
+# Options de découverte de Kibana
+# elasticsearch.sniffOnStart: true
+# elasticsearch.sniffInterval: 60000
+
+# Définition du nom de cluster de Kibana
+# Par défaut, Kibana utilise le nom de cluster d'Elasticsearch
+# Si vous souhaitez spécifier un nom personnalisé pour Kibana, décommentez la ligne suivante :
+# kibana.index: ".kibana"
+
+# URL de base pour les liens de Kibana
+# Par défaut, Kibana utilise l'URL de la requête entrante pour les liens
+# Si vous utilisez un proxy inverse, vous pouvez spécifier l'URL de base ici :
+# server.basePath: "/kibana"
+
+# Activer ou désactiver l'authentification basée sur le navigateur (Basic Auth)
+# security.showInsecureClusterWarning: false
+# xpack.security.enabled: true
+# xpack.security.encryptionKey: "your_encryption_key"
+
+# Activer ou désactiver l'audit de l'accès aux dashboards
+# xpack.security.audit.enabled: true
+
+# Activer ou désactiver l'authentification SAML (Single Sign-On)
+# xpack.security.authProviders: [saml]
+
+# Configurer le SAML pour l'authentification SAML (fournisseur d'identité SAML requis)
+# xpack.security.authProviders.saml.samlRealm: "your_saml_realm"
+# xpack.security.authProviders.saml.samlEntryPoint: "https://your_saml_idp/sso"
+# xpack.security.authProviders.saml.samlLogoutUrl: "https://your_saml_idp/logout"
+# xpack.security.authProviders.saml.samlNoDefaultSP: true
+# xpack.security.authProviders.saml.samlCallbackUrl: "https://your_kibana_server/sso/saml"
+# xpack.security.authProviders.saml.maxRedirectURLSize: "1000b"
+
+# Délai d'expiration du ticket d'accès (Access Token) pour l'authentification SAML
+# xpack.security.authProviders.saml.maxSessionTimeout: "24h"
+
+# Configurer un proxy inverse (si applicable)
+# server.rewriteBasePath: true
+# server.basePath: "/kibana"
+
+# Activer ou désactiver l'authentification des utilisateurs avec les credentials intégrés
+# security.authProviders: [basic]
+
+# Configurer les utilisateurs avec les credentials intégrés (à utiliser avec prudence)
+# xpack.security.authc.providers: [basic]
+# xpack.security.authc.basic.users: ["kibana_user:your_password", "autre_utilisateur:mot_de_passe"]
+
+# Options pour contrôler l'accès de Kibana aux index Elasticsearch
+# xpack.security.audit.index: ".kibana-audit-log"
+# xpack.security.audit.appender.kind: "index"
+
+# Activer ou désactiver les notifications pour les mises à jour de Kibana
+# xpack.upgrade_assistant.enabled: true
+# xpack.reporting.enabled: true
+
+# Spécifier la date et l'heure pour l'index des rapports
+# xpack.reporting.index: ".reporting-kibana"
+
+# Activer ou désactiver le chiffrement des communications entre les navigateurs et Kibana
+# xpack.security.cookie.secure: true
+
+# Configurer les cookies pour l'authentification avec SAML
+# xpack.security.authProviders.saml.samlDefaultIdp: "your_saml_idp"
+# xpack.security.secureCookies: true
+
+# Activer ou désactiver l'intégration de Cross-Origin Resource Sharing (CORS)
+# server.cors: true
+# server.cors.origin: ["https://domaine_autorise"]
+
+# Configurer les paramètres de journalisation
+# logging.dest: /var/log/kibana/kibana.log
+# logging.verbose: true

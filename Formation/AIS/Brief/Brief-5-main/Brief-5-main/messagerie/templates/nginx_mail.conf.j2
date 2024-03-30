@@ -1,0 +1,20 @@
+server {
+    listen 80;
+    server_name mail.example.com;
+
+    location / {
+        proxy_pass http://127.0.0.1:8080;
+    }
+}
+
+server {
+    listen 443 ssl;
+    server_name mail.ais-simplon-lil.cloudns.ph;
+
+    ssl_certificate /etc/letsencrypt/live/mail.ais-simplon-lil.cloudns.ph/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/mail.ais-simplon-lil.cloudns.ph/privkey.pem;
+
+    location / {
+        proxy_pass http://127.0.0.1:4433;
+    }
+}

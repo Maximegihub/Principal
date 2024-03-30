@@ -1,0 +1,30 @@
+input {
+  # Exemple : Lire des logs à partir d'un fichier
+  file {
+    path => "/var/log/auth.log"
+    start_position => "beginning"
+    sincedb_path => "/dev/null"
+  }
+}
+
+filter {
+  # Exemple : Utilisation de grok pour parser les logs
+  grok {
+    match => { "message" => "%{TIMESTAMP_ISO8601:timestamp} %{LOGLEVEL:loglevel} %{GREEDYDATA:message}" }
+  }
+}
+
+output {
+  # Exemple : Sortie vers la console
+  stdout {
+    codec => rubydebug
+  }
+
+  # Exemple : Sortie vers Elasticsearch
+  elasticsearch {
+    hosts => ["127.0.0.1:9200"]
+    user => "admin"
+    password => "Erty123!"
+    index => "server"
+  }
+}

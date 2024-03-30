@@ -1,0 +1,119 @@
+---
+
+- name: Déploiement de confluence
+  hosts: INTRANET-LIL
+  become: yes
+  become_method: su
+
+  tasks:
+    - name: Installation des dépendances 
+      apt:
+        name: 
+          - python3-psycopg2
+          - python3-ipaddr
+          - firewalld
+          - python3-firewall
+          - openjdk-11-jre
+        state: present
+    - name: Installation du repo postgresql
+      shell: sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
+
+    - name: Installation de la clé du repo
+      shell: wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
+ 
+    - name: Mise à jour du cache apt
+      apt:
+        update_cache: yes
+    - name: Installation de postgresql-15
+      apt:
+        name: postgresql
+        state: present  
+
+    - name: Modification du fichier postgresql.conf
+      community.postgresql.postgresql_set:
+        name: listen_addresses
+        value: '*'
+      become: true
+      become_user: postgres 
+
+    - name: Redémarrage du service PostgreSQL
+      service:
+        name: postgresql
+        state: restarted
+
+    - name: Configuration de firewalld
+      ansible.posix.firewalld:
+        service: postgresql
+        permanent: true
+        state: enabled
+
+    - name: Création de la base de données confluence
+      community.postgresql.postgresql_db:
+        name: confluence
+        encoding: UTF-8
+        lc_collate: fr_FR.UTF-8
+        lc_ctype: fr_FR.UTF-8
+        template: template0
+      become: true
+      become_user: postgres
+
+    - name: Modification du mot de passe de l'utilisateur postgres
+      community.postgresql.postgresql_user:
+        name: postgres
+        password: ais
+      become: true
+      become_user: postgres
+
+    - name: Redémarrage du service PostgreSQL
+      service:
+        name: postgresql
+        state: restarted
+
+    - name: Création du répertoire /opt/confluence
+      file:
+         path: /opt/confluence
+         state: directory
+         owner: www-data
+         group: www-data
+         mode: '0777'
+
+    - name: Téléchargement de confluence
+      get_url:
+        url: https://www.atlassian.com/software/confluence/downloads/binary/atlassian-confluence-8.3.2.tar.gz
+        dest: /tmp/atlassian-confluence-8.3.2.tar.gz
+ 
+    - name: Décompression de confluence 
+      unarchive:
+        src: /tmp/atlassian-confluence-8.3.2.tar.gz
+        dest: /opt/confluence
+        remote_src: yes
+
+    - name: Modifier fichier environnement
+      lineinfile:
+        dest: /etc/environment
+        line: 'ATLASSIAN_HOME=/opt/confluence'
+
+    - name: Configure Confluence Directory
+      file:
+        path: /opt/confluence
+        state: directory
+        owner: www-data
+        group: www-data
+        mode: '0777'
+  
+    - name: Modifier Confluence Init
+      replace:
+        path: /opt/confluence/atlassian-confluence-8.3.2/confluence/WEB-INF/classes/confluence-init.properties
+        regexp: '# confluence.home=/var/confluence'
+        replace: 'confluence.home=/var/confluence'
+        backup: yes
+   
+    - name: Démarrer Confluence
+      shell: /opt/confluence/atlassian-confluence-8.3.2/bin/start-confluence.sh
+
+    - name: Configuration de firewalld
+      ansible.posix.firewalld:
+        port: 8090-8091/tcp
+        permanent: true
+        state: enabled
+        immediate: true 

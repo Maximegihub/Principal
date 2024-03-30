@@ -1,0 +1,147 @@
+---
+
+- hosts: TARGET
+  become: yes
+  become_method: sudo
+
+  tasks:
+    - name: Install Apache web server
+      apt:
+        name: apache2
+        state: present
+
+    - name: Install PHP and required modules
+      apt:
+        name:
+          - php
+          - libapache2-mod-php
+          - php-iconv
+          - php-intl
+          - php-soap
+          - php-zip
+          - php-curl
+          - php-mbstring
+          - php-mysql
+          - php-gd
+          - php-xml
+          - php-pspell
+          - php-json
+          - php-xmlrpc
+          - unzip
+        state: present
+
+    - name: Install MariaDB (MySQL)
+      apt:
+        name:
+          - mariadb-server
+          - mariadb-client
+        state: present
+
+    - name: Install PyMySQL for Python 3
+      apt:
+        name: python3-pip
+        state: present
+
+    - name: Install PyMySQL module
+      pip:
+        name: pymysql
+        executable: pip3
+        state: present
+
+    - name: Create Moodle database
+      mysql_db:
+        name: moodledb
+        state: present
+        login_unix_socket: /var/run/mysqld/mysqld.sock
+
+    - name: Create Moodle database user
+      mysql_user:
+        name: moodle_user
+        password: bDSI1uBYvKuO
+        priv: 'moodle.*:ALL'
+        login_unix_socket: /var/run/mysqld/mysqld.sock
+
+    - name: Download Moodle
+      get_url:
+        url: https://download.moodle.org/download.php/direct/stable400/moodle-4.0.1.zip
+        dest: /tmp/moodle-4.0.1.zip
+
+    - name: Extract Moodle
+      unarchive:
+        src: /tmp/moodle-4.0.1.zip
+        dest: /var/www/html/
+        remote_src: yes
+
+    - name: Set var directory permissions
+      file:
+        path: /var/www
+        state: directory
+        recurse: yes
+        owner: www-data
+        group: www-data
+        mode: '0755'
+
+    - name: Set Moodle directory permissions
+      file:
+        path: /var/www/html/moodle
+        state: directory
+        recurse: yes
+        owner: www-data
+        group: www-data
+        mode: '0755'
+
+    - name: Configure Moodle data directory
+      file:
+        path: /var/www/html/moodledata
+        state: directory
+        owner: www-data
+        group: www-data
+        mode: '0777'
+
+    - name: Création Fichier
+      file:
+        path: /etc/apache2/sites-available/moodle.conf
+        state: touch
+        owner: www-data
+        group: www-data
+        mode: 0777
+
+    - name: Ajouter des lignes au fichier
+      lineinfile:
+        dest: /etc/apache2/sites-available/moodle.conf
+        line: '<VirtualHost *:80>
+
+
+               ServerAdmin webmaster@10.40.1.61
+
+
+               ServerName 10.40.1.61
+
+               ServerAlias 10.40.1.61
+
+               DocumentRoot /var/www/html/moodle
+
+
+               <Directory /var/www/html/moodle/>
+
+                       Options Indexes FollowSymLinks
+
+                       AllowOverride All
+
+                       Require all granted
+
+               </Directory>
+
+
+               ErrorLog ${APACHE_LOG_DIR}/your-domain.com_error.log
+
+               CustomLog ${APACHE_LOG_DIR}/your-domain.com_access.log combined
+
+
+               </VirtualHost>'
+
+    - name: Supprimer un fichier
+      file:
+        state: absent
+        path: /var/www/html/index.html
+

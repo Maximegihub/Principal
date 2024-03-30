@@ -1,0 +1,55 @@
+LES 10 RACCOURCIS CLAVIER DE BASE SUR WINDOWS
+Ces raccourcis mythiques fonctionnent sur toutes les versions de Windows. Du fait de leur popularité, ils sont également disponibles sur de nombreux logiciels de bureau.
+
+Ctrl+C : copier
+Ctrl+X : couper
+Ctrl+V : coller
+Ctrl+Z : annuler
+Ctrl+Y : rétablir
+Ctrl+A : tout sélectionner
+Ctrl+P : imprimer
+F1 : afficher l’aide
+Ctrl+Alt+Suppr : pour ouvrir le gestionnaire de tâche ou verrouiller l’ordinateur
+Windows ou Ctrl+Echap : ouvrir le menu démarrer/basculer sur le bureau (Windows 8)
+LES RACCOURCIS WINDOWS LES PLUS UTILISÉS PAR LES PROFESSIONNELS
+Pour améliorer votre productivité au travail, vous pouvez utiliser ces raccourcis clavier.
+
+Ctrl+Roulette de la souris : pour zoomer/dé-zoomer.
+Windows+P : pour changer le mode d’affichage (pratique avec un rétroprojecteur) : déconnecter le rétroprojecteur, dupliquer, étendre, ou rétroprojecteur uniquement.
+Windows+F : pour lancer une recherche rapide sur un ordinateur
+Windows+Maj+Clic : pour lancer une nouvel instance d’un programme. Exemple : cliquez sur l’icône Microsoft Word de votre barre de tâche pour ouvrir un nouveau document.
+Windows+L : un raccourci clavier pour verrouiller son ordinateur.
+Ctrl+Flèche gauche/droite : pour placer le curseur au début du mot ou du prochain mot.
+Shift+Flèche gauche/droite : pour sélectionner du texte.
+Ctrl+Shift+Flèche gauche/droite : pour sélectionner un mot entier.
+Ctrl+Backspace : pour supprimer un mot entier.
+Ctrl+F4 : pour fermer une fenêtre. Ou un ordinateur, si aucune fenêtre n’est ouverte.
+Windows+E : un raccourci clavier pour afficher le poste de travail.
+Maj à l’insertion d’un CD : ce raccourci permet d’empêcher la lecture automatique.
+Ctrl+Windows+F : pour rechercher un ordinateur sur un réseau.
+Echap pendant un processus : pour annuler le processus en cours (transfert, copie…).
+Ctrl+Maj+Clic : pour ouvrir un programme en tant qu’administrateur.
+LES RACCOURCIS CLAVIER WINDOWS POUR GÉRER LES FENÊTRES
+Windows fonctionne avec des fenêtres… d’où son nom. Il existe de nombreux raccourcis clavier pour passer d’une fenêtre à l’autre où les masquer facilement.
+
+Alt+Tab : passer d’une fenêtre à l’autre. Maintenez la touche Alt enfoncée et appuyez une ou plusieurs fois sur la touche Tab pour accéder à la fenêtre de votre choix.
+Alt+Shift+Tab : passer d’une fenêtre à l’autre (dans l’ordre inverse). Cette fois-ci, vous devez maintenir les touches Alt et Shift, et appuyer sur la touche Tab une ou plusieurs fois.
+Windows+Tab : même principe qu’Alt+Tab, mais sous une forme plus visuelle. Fonctionne depuis Windows 7 lorsque la fonctionnalité Aero est supportée.
+Windows+D : masquer toutes les fenêtres. Pratique pour afficher brièvement le bureau. Il suffit d’appuyer à nouveau sur les touches Windows+D pour récupérer les fenêtres.
+Windows+Flèche vers le bas : si la fenêtre occupe tout l’écran (fenêtre agrandie), elle retrouve une taille classique. Un deuxième clique sur Windows+Flèche vers le bas minimise la fenêtre.
+Windows+Flèche vers le haut : une raccourci clavier pour agrandir la fenêtre active.
+Windows+Flèche vers la gauche : pour placer la fenêtre sur la moitié gauche de l’écran.
+Windows+Flèche vers la droite : pour placer la fenêtre sur la moitié droite de l’écran.
+Windows+Shift+Flèche droite ou gauche : permet de déplacer une fenêtre d’un écran à l’autre. Ce raccourci clavier ne fonctionne que si vous utilisez plusieurs écrans.
+D’AUTRES RACCOURCIS WINDOWS À CONNAÎTRE
+Ctrl+N : ouvrir une nouvelle fenêtre.
+F5 ou Ctrl+R : actualiser la fenêtre active.
+Ctrl+Maj+Echap : affiche le gestionnaire de tâches, qui permet de fermer une application, afficher les processus ou les performances de votre PC en temps-réel.
+Ctrl+clic : pour sélectionner plusieurs éléments (des fichiers ou des dossiers par exemple).
+Shift+clic : pour sélectionner tous les éléments compris entre le premier et le second clic. Fonctionne avec du texte, des fichiers et des dossiers, et peut être combiné avec Ctrl+clic.
+Maj (5 fois) : pour désactiver les touches rémanentes (ou les activer).
+Alt+Maj : pour repasser le clavier en Français, si par mégarde votre clavier est passé en anglais. Ce raccourci ne fonctionne qu’avec la touche Alt gauche, et si plusieurs langues sont activées.
+Maj+Suppr : pour supprimer définitivement un fichier ou un dossier. 
+ 
+
+Cet extrait est issu du site blogdumoderateur.com, où vous pourrez retrouver la totalité de l'article.

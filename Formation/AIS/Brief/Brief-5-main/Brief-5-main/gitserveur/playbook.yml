@@ -1,0 +1,62 @@
+#name: Déploiement d'un serveur Git
+- hosts: git_server
+  become: true
+  become_method: su
+
+  tasks:
+    - name: Installation de Git
+      apt:
+        name: git
+        state: present
+
+    - name: Création d'un utilisateur Git
+      user:
+        name: git
+        shell: /bin/bash
+        createhome: yes
+
+    - name: Configuration du serveur SSH
+      lineinfile:
+        path: /etc/ssh/sshd_config
+        line: 'AllowUsers git'
+        state: present
+      
+
+    - name: Redémarrage du service SSH
+      service:
+        name: sshd
+        state: restarted
+      become: true
+      become_method: sudo
+      become_user: root
+      tags: Restart SSH
+
+    - name: Initialisation du dépôt Git
+      git:
+        repo: /ansible/gitserveur/dépotgit
+        init: yes
+        bare: yes
+        user: git
+       # group: git
+
+    - name: Configuration des autorisations du dépôt Git
+      file:
+        path: /ansible/gitserveur/dépotgit.git
+        owner: git
+        group: git
+        mode: '0700'
+        recurse: yes
+
+    - name: Création d'un fichier post-receive pour les hooks Git
+      copy:
+        src: files/post-receive
+        dest: /ansible/gitserveur
+        owner: git
+        group: git
+        mode: '0700'
+
+    - name: Redémarrage du service Git
+      systemd:
+        name: git
+        state: restarted
+    

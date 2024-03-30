@@ -1,0 +1,84 @@
+# Translation of Plugins - Statify - Stable (latest release) in English (Australia)
+# This file is distributed under the same license as the Plugins - Statify - Stable (latest release) package.
+msgid ""
+msgstr ""
+"PO-Revision-Date: 2017-03-24 02:04:20+0000\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: GlotPress/3.0.0-alpha.2\n"
+"Language: en_AU\n"
+"Project-Id-Version: Plugins - Statify - Stable (latest release)\n"
+
+#: inc/class-statify-settings.php:368 views/widget-back.php:49
+msgid "Documentation"
+msgstr "Documentation"
+
+#: inc/class-statify-backend.php:43 inc/class-statify-settings.php:370
+#: views/widget-back.php:51
+msgid "Support"
+msgstr "Support"
+
+#: inc/class-statify-backend.php:42 inc/class-statify-settings.php:369
+#: views/widget-back.php:50
+msgid "Donate"
+msgstr "Donate"
+
+#: inc/class-statify-settings.php:368
+msgid "https://wordpress.org/plugins/statify/"
+msgstr "https://en-au.wordpress.org/plugins/statify/"
+
+#. Author of the plugin
+msgid "pluginkollektiv"
+msgstr "pluginkollektiv"
+
+#. Description of the plugin
+msgid "Compact, easy-to-use and privacy-compliant stats plugin for WordPress."
+msgstr "Compact, easy-to-use and privacy-compliant stats plugin for WordPress."
+
+#. Plugin Name of the plugin
+#: inc/class-statify-settings.php:342 inc/class-statify-settings.php:343
+msgid "Statify"
+msgstr "Statify"
+
+#: views/widget-front.php:38
+msgid "Top referers"
+msgstr "Top referers"
+
+#: views/widget-front.php:63
+msgid "Top targets"
+msgstr "Top targets"
+
+#: views/widget-front.php:20
+msgid "No data available."
+msgstr "No data available."
+
+#: views/widget-back.php:39
+msgid "Entries in top lists only for today"
+msgstr "Entries in top lists only for today"
+
+#: inc/class-statify-settings.php:70 views/widget-back.php:35
+msgid "Number of entries in top lists"
+msgstr "Number of entries in top lists"
+
+#: inc/class-statify-settings.php:38
+msgid "Period of data saving"
+msgstr "Period of data saving"
+
+#: inc/class-statify-settings.php:126 inc/class-statify-settings.php:188
+#: views/widget-back.php:29
+msgid "days"
+msgstr "days"
+
+#: inc/class-statify-dashboard.php:147
+msgid "Pageviews"
+msgstr "Pageviews"
+
+#: inc/class-statify-dashboard.php:146
+msgid "Pageview"
+msgstr "Pageview"
+
+#: inc/class-statify-backend.php:76
+msgid "Settings"
+msgstr "Settings"

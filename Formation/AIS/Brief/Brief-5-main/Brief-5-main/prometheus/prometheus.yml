@@ -1,0 +1,40 @@
+# my global config
+global:
+  scrape_interval: 15s # Définir l'intervalle de récupération à 15 secondes. La valeur par défaut est 1 minute.
+  evaluation_interval: 15s # Évaluer les règles toutes les 15 secondes. La valeur par défaut est 1 minute.
+  # scrape_timeout est défini sur la valeur par défaut globale (10s).
+
+# Alertmanager configuration
+alerting:
+  alertmanagers:
+  - static_configs:
+    - targets:
+       - alertmanager:9093
+
+# Charger les règles une fois et les évaluer périodiquement selon l'« evaluation_interval » global.
+rule_files:
+   #- "regles1.yml"
+  # - "deuxiemes_regles.yml"
+
+# Une configuration de récupération contenant exactement un point de terminaison à récupérer :
+# Ici, c'est Prometheus lui-même.
+scrape_configs:
+  # Le nom du job est ajouté en tant qu'étiquette « job=<nom_du_job> » à toutes les séries temporelles récupérées à partir de cette configuration.
+  - job_name: 'prometheus'
+
+    # Le chemin des métriques est défini par défaut sur '/metrics'.
+    # scheme est défini par défaut sur 'http'.
+
+    static_configs:
+    - targets: ['localhost:9090']
+
+  # Exemple supplémentaire pour la récupération d'une cible fictive, remplacez l'adresse IP par celle de votre cible réelle.
+  - job_name: 'example_target'
+    static_configs:
+    - targets: ['0.0.0.0:9100']  # Remplacez par l'adresse IP réelle de votre cible avec le port de récupération exposé.
+
+# Vous pouvez ajouter plus de configurations de récupération pour d'autres cibles à surveiller.
+# Par exemple :
+#   - job_name: 'my_other_service'
+#     static_configs:
+#     - targets: ['192.168.1.101:9100']

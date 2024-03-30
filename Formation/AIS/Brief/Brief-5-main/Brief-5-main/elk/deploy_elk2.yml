@@ -1,0 +1,58 @@
+- name: Installer et configurer ELK Stack
+  hosts: machines 
+  become: true
+  become_method: su
+
+  tasks:
+    - name: Installer gnupg
+      apt:
+        name: gnupg
+        state: present
+
+    - name: Installer Java
+      apt:
+        name: openjdk-11-jdk
+        state: present
+
+    - name: Installer rsync
+      apt:
+        name: rsync
+        state: present
+
+    - name: Ajouter la clé Elasticsearch et le dépôt
+      apt_key:
+        url: https://artifacts.elastic.co/GPG-KEY-elasticsearch
+        state: present
+
+    - name: Ajouter le dépôt Elasticsearch
+      apt_repository:
+        repo: "deb https://artifacts.elastic.co/packages/8.x/apt stable main"
+        state: present
+
+    - name: Installer Elasticsearch avec option --allow-downgrades
+      apt:
+        name: elasticsearch=8.8.2
+        state: present
+        update_cache: yes
+        force: yes
+        allow_downgrades: yes
+
+    - name: Transférer le fichier de configuration Elasticsearch
+      copy:
+        src: /ansible/elk/elasticsearch.yml
+        dest: /etc/elasticsearch/elasticsearch.yml
+        owner: elasticsearch
+        group: elasticsearch
+        mode: "0644"
+      #delegate_to: localhost
+
+    - name: Configurer Elasticsearch
+      lineinfile:
+        path: /etc/elasticsearch/elasticsearch.yml
+        regexp: "^#cluster.initial_master_nodes:.*$"
+        line: "cluster.initial_master_nodes: ['node-1']"
+
+    - name: Démarrer Elasticsearch
+      service:
+        name: elasticsearch
+        state: started

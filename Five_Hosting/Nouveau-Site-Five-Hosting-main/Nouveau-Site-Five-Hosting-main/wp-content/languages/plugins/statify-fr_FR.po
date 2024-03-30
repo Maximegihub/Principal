@@ -1,0 +1,84 @@
+# Translation of Plugins - Statify - Stable (latest release) in French (France)
+# This file is distributed under the same license as the Plugins - Statify - Stable (latest release) package.
+msgid ""
+msgstr ""
+"PO-Revision-Date: 2020-01-29 22:03:02+0000\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n > 1;\n"
+"X-Generator: GlotPress/3.0.0-alpha.2\n"
+"Language: fr\n"
+"Project-Id-Version: Plugins - Statify - Stable (latest release)\n"
+
+#: inc/class-statify-settings.php:368 views/widget-back.php:49
+msgid "Documentation"
+msgstr "Documentation"
+
+#: inc/class-statify-settings.php:368
+msgid "https://wordpress.org/plugins/statify/"
+msgstr "https://wordpress.org/plugins/statify/"
+
+#: inc/class-statify-backend.php:43 inc/class-statify-settings.php:370
+#: views/widget-back.php:51
+msgid "Support"
+msgstr "Support"
+
+#: inc/class-statify-backend.php:42 inc/class-statify-settings.php:369
+#: views/widget-back.php:50
+msgid "Donate"
+msgstr "Faire un don"
+
+#. Description of the plugin
+msgid "Compact, easy-to-use and privacy-compliant stats plugin for WordPress."
+msgstr "Une extension de statistique légère, facile d’utilisation et respectueuse de la sphère privée."
+
+#. Plugin Name of the plugin
+#: inc/class-statify-settings.php:342 inc/class-statify-settings.php:343
+msgid "Statify"
+msgstr "Statify"
+
+#: views/widget-front.php:38
+msgid "Top referers"
+msgstr "Meilleurs référents"
+
+#: views/widget-front.php:63
+msgid "Top targets"
+msgstr "Meilleurs contenus"
+
+#: views/widget-front.php:20
+msgid "No data available."
+msgstr "Aucune donnée disponible."
+
+#: views/widget-back.php:39
+msgid "Entries in top lists only for today"
+msgstr "Entrées dans la top liste pour aujourd'hui uniquement"
+
+#: inc/class-statify-settings.php:70 views/widget-back.php:35
+msgid "Number of entries in top lists"
+msgstr "Nombre d’entrées dans la top liste"
+
+#: inc/class-statify-settings.php:38
+msgid "Period of data saving"
+msgstr "Période de sauvegarde des données"
+
+#: inc/class-statify-settings.php:126 inc/class-statify-settings.php:188
+#: views/widget-back.php:29
+msgid "days"
+msgstr "jours"
+
+#: inc/class-statify-dashboard.php:147
+msgid "Pageviews"
+msgstr "Pages vues"
+
+#: inc/class-statify-dashboard.php:146
+msgid "Pageview"
+msgstr "Page vue"
+
+#: inc/class-statify-backend.php:76
+msgid "Settings"
+msgstr "Réglages"
+
+#. Author of the plugin
+msgid "pluginkollektiv"
+msgstr "pluginkollektiv"

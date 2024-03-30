@@ -1,0 +1,42 @@
+---
+- name: Install and Configure Logstash
+  hosts: logstash
+  become: yes
+  tasks:
+    - name: Install Logstash
+      apt:
+        name: logstash
+        state: present
+      notify:
+        - Restart Logstash
+
+    - name: Create 02-beats-input.conf
+      copy:
+        content: |
+          input {
+            beats {
+              port => 5044
+            }
+          }
+        dest: /etc/logstash/conf.d/02-beats-input.conf
+      notify:
+        - Restart Logstash
+
+    - name: Create 30-elasticsearch-output.conf
+      copy:
+        content: |
+          output {
+            elasticsearch {
+              hosts => ["localhost:9200"]
+              index => "%{[@metadata][beat]}-%{+YYYY.MM.dd}"
+            }
+          }
+        dest: /etc/logstash/conf.d/30-elasticsearch-output.conf
+      notify:
+        - Restart Logstash
+
+  handlers:
+    - name: Restart Logstash
+      service:
+        name: logstash
+        state: restarted

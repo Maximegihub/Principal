@@ -1,0 +1,43 @@
+.wdes-countdown-timer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  min-height: 136px;
+
+  .wdes-countdown-timer_item {
+    text-align: center;
+    padding: 20px;
+    border-radius: 2px;
+    margin: 10px;
+    display: flex;
+    flex-flow: column;
+
+    @media screen and (max-width: 767px) {
+      width: calc(100% / 2 - 20px) !important;
+    }
+
+    .wdes-countdown-timer_item-value {
+      color: #1b3a4e;
+      font-family: Poppins, sans-serif;
+      font-weight: 700;
+      font-size: 50px;
+
+      .wdes-countdown-timer_digit {
+        display: inline-block;
+      }
+    }
+
+    .wdes-countdown-timer_item-label {
+      color: #c51e3a;
+      font-family: Poppins, sans-serif;
+      font-size: 16px;
+    }
+  }
+
+  @media screen and (max-width: 767px) {
+    .wdes-countdown-timer_separator {
+      display: none !important;
+    }
+  }
+}

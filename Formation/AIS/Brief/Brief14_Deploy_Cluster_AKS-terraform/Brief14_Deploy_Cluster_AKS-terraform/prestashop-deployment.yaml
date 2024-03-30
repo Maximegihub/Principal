@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: prestashop-deployment
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      app: prestashop
+  template:
+    metadata:
+      labels:
+        app: prestashop
+    spec:
+      containers:
+      - name: prestashop
+        image: prestashop/prestahsop:1.7.8.10
+        ports:
+        - containerPort: 80

@@ -1,0 +1,45 @@
+---
+- name: Installer et configurer Filebeat
+  hosts: filebeat
+  become: true
+  become_method: su
+  tasks:
+    - name: Installation de Filebeat
+      apt:
+        name: filebeat
+        state: present
+        update_cache: yes
+
+    - name: Désactiver la sortie Elasticsearch de Filebeat
+      lineinfile:
+        path: /etc/filebeat/filebeat.yml
+        regexp: '^output.elasticsearch:'
+        line: '#output.elasticsearch:'
+
+    - name: Configurer la sortie Logstash de Filebeat
+      lineinfile:
+        path: /etc/filebeat/filebeat.yml
+        regexp: '^#output.logstash:'
+        line: 'output.logstash:'
+      notify: Redémarrer Filebeat
+
+    - name: Décommenter la ligne hosts dans la sortie Logstash de Filebeat
+      lineinfile:
+        path: /etc/filebeat/filebeat.yml
+        regexp: '^#hosts:'
+        line: '  hosts: ["localhost:5044"]'
+      notify: Redémarrer Filebeat
+
+    - name: Activer les modules system dans Filebeat
+      command: filebeat modules enable system
+
+    - name: Charger les pipelines d'ingestion pour le module system
+      command: sudo filebeat setup --pipelines --modules system
+      args:
+        creates: /etc/filebeat/ingest-pipeline
+
+  handlers:
+    - name: Redémarrer Filebeat
+      systemd:
+        name: filebeat
+        state: restarted

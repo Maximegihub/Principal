@@ -1,0 +1,43 @@
+msgid ""
+msgstr ""
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: n/a\n"
+"PO-Revision-Date: 2021-09-28 12:20+0000\n"
+"Last-Translator: Tara Gaugh Jones <tara.gaugh.jones@devowl.io>\n"
+"Language-Team: German <https://translate.devowl.io/projects/devowl-wp-real-"
+"queue-frontend-javascript/develop/de/>\n"
+"Language: de_CH_informal\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 4.8\n"
+
+#: index.js:1
+msgid "Delete"
+msgstr "Löschen"
+
+#: index.js:1
+msgid "Retry"
+msgstr "Erneut versuchen"
+
+#: index.js:1
+msgid "Error message:"
+msgstr "Fehlermeldung:"
+
+#: index.js:1
+msgid "Background tasks: Something went wrong"
+msgstr "Hintergrundaufgaben: Etwas ist schiefgelaufen"
+
+#: index.js:1
+msgid ""
+"Your WordPress installation is working in the background on tasks that you "
+"basically don't notice. Unfortunately, an error occurred while running a "
+"task. Below is a list of failed tasks that you can either delete (and thus "
+"cancel the task) or try again."
+msgstr ""
+"Deine WordPress-Installation arbeitet im Hintergrund an Aufgaben, die du im "
+"Grunde nicht bemerkst. Leider ist beim Ausführen einer Aufgabe ein Fehler "
+"aufgetreten. Im Folgenden findest du eine Liste der fehlgeschlagenen "
+"Aufgaben, die du entweder löschen (und damit die Aufgabe abbrechen) oder "
+"erneut versuchen kannst."

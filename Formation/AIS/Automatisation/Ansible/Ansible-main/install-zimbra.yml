@@ -1,0 +1,89 @@
+---
+- name: Installer et configurer le serveur Zimbra
+  hosts: TARGET
+  become: true
+  tasks:
+    - name: Ajouter les paquets recommandés
+      apt:
+        name: "{{ item }}"
+        state: present
+        install_recommends: yes
+      loop:
+        - libidn11
+        - libpcre3
+        - libgmp3-dev
+        - libexpat1
+        - libstdc++5
+        - libstdc++6
+        - libperl5i-perl
+        - libltdl7
+        - sudo
+        - sysstat
+        - openssh-server
+        - ntp
+        - fetchmail
+        - arj
+        - cabextract
+        - lhasa
+        - lzop
+        - nomarch
+        - tnef
+        - unrar
+        - libssl-dev
+        - libio-socket-ssl-perl
+        - libnet-https-any-perl
+        - libxml2-dev
+        - zlib1g-dev
+        - libxml-simple-perl
+
+    - name: Configurer /etc/hosts
+      blockinfile:
+        path: /etc/hosts
+        marker: ""
+        block: |
+          127.0.0.1   localhost.localdomain  localhost
+          10.10.0.1   mail.domain.com  mail
+
+    - name: Télécharger et extraire le serveur Zimbra
+      block:
+        - name: Télécharger le package du serveur Zimbra
+          get_url:
+            url: "https://files.zimbra.com/downloads/8.8.15_GA/zcs-8.8.15_GA_4179.UBUNTU20_64.20211118033954.tgz"
+            dest: "/zcs-8.8.15_GA_4179.UBUNTU20_64.20211118033954.tgz"
+
+        - name: Extraire le package du serveur Zimbra
+          unarchive:
+            src: "/zcs-8.8.15_GA_4179.UBUNTU20_64.20211118033954.tgz"
+            dest: "/zimbra"
+
+    - name: Installer le serveur Zimbra
+      block:
+        - name: Exécuter le script d'installation du serveur Zimbra
+          command: "/zimbra/install.sh -u"
+          args:
+            chdir: "/zimbra"
+          # Définissez "creates" sur un fichier ou un répertoire indiquant que l'installation est déjà terminée,
+          # pour éviter d'exécuter le script plusieurs fois.
+          creates: "/opt/zimbra/bin/zmcontrol"
+
+    - name: Configurer le serveur Zimbra
+      block:
+        - name: Configurer les options du serveur Zimbra
+          command: "/opt/zimbra/bin/zmprov {{ item }}"
+          loop:
+            - "modServer -zimbraFeatureIMEnabled FALSE"
+            - "modServer -zimbraFeatureTasksEnabled TRUE"
+            - "modServer -zimbraFeatureBriefcasesEnabled TRUE"
+            - "modServer -zimbraFeatureNotebookEnabled TRUE"
+            # Ajouter d'autres options de configuration si nécessaire
+
+    - name: Appliquer la configuration du serveur Zimbra
+      block:
+        - name: Appliquer la configuration du serveur Zimbra
+          command: "/opt/zimbra/bin/zmprov {{ item }}"
+          loop:
+            - "allServers"
+            - "saveConfig"
+
+        - name: Redémarrer les services Zimbra
+          command: "/opt/zimbra/bin/zmcontrol restart"

@@ -1,0 +1,28 @@
+# Utilisation d'une image de base basée sur Linux (par exemple, Ubuntu) avec Apache préinstallé
+FROM ubuntu:latest
+
+# Mettez à jour le système de packages et installez Apache
+RUN apt-get update -y && \
+    apt-get install apache2 -y
+
+# Copiez votre contenu web (fichiers HTML, etc.) dans le répertoire de base d'Apache
+COPY ./mon_site_web /var/www/html
+
+# Exposez le port 80 pour les requêtes HTTP
+EXPOSE 80
+
+# Commande pour démarrer Apache lorsque le conteneur est lancé
+CMD ["apache2ctl", "-D", "FOREGROUND"]
+Assurez-vous de remplacer ./mon_site_web par le chemin de votre propre contenu web si nécessaire.
+
+version: '3'
+
+services:
+  monserveurweb:
+    image: ubuntu:latest
+    container_name: monserveurweb
+    ports:
+      - "8080:80"
+    volumes:
+      - ./mon_site_web:/var/www/html
+    command: ["apache2ctl", "-D", "FOREGROUND"]

@@ -1,0 +1,42 @@
+---
+- name: Installer Grafana sur Debian
+  hosts: grafana
+  become: true
+  become_method: su
+  tasks:
+    - name: Installer gnupg2
+      apt:
+        name: gnupg2
+        state: present
+
+    - name: Créer un utilisateur pour Grafana
+      user:
+        name: grafana
+        shell: /bin/bash
+        createhome: yes
+
+    - name: Mettre à jour le système Debian
+      apt:
+        update_cache: yes
+        upgrade: dist
+
+    - name: Ajouter le référentiel Grafana APT
+      apt_key:
+        url: https://packages.grafana.com/gpg.key
+        state: present
+
+    - name: Ajouter le référentiel Grafana APT
+      apt_repository:
+        repo: "deb https://packages.grafana.com/oss/deb stable main"
+        state: present
+
+    - name: Installer Grafana
+      apt:
+        name: grafana
+        state: present
+
+    - name: Démarrer le service Grafana
+      service:
+        name: grafana-server
+        state: started
+        enabled: yes

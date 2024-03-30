@@ -1,0 +1,59 @@
+# Document : Fichier YAML pour déployer le serveur mail
+# Author : Bastien V
+# Changelog : v1 création 06/07/2023 
+---
+- hosts:
+    "{{ host }}"
+  become: true
+  tasks:
+  - name: Install Dialog
+    apt:
+      name: dialog
+      state: present
+      update_cache: yes
+  - name: Download installer archive
+    get_url:
+      url: https://github.com/iredmail/iRedMail/archive/refs/tags/1.6.3.tar.gz
+      dest: /tmp
+  - name: Uncompress archive
+    unarchive:
+      remote_src: yes
+      src: /tmp/iRedMail-1.6.3.tar.gz
+      dest: /tmp
+  - name: Generate auto install config
+    shell: |
+      echo 'export STORAGE_BASE_DIR='/var/vmail'
+      export WEB_SERVER='NGINX'
+      export BACKEND_ORIG='PGSQL'
+      export BACKEND='PGSQL'
+      export VMAIL_DB_BIND_PASSWD='WnfQnybzWRrShmLdMRtAhLukfNmzIwKM'
+      export VMAIL_DB_ADMIN_PASSWD='OuZ4c01uSrOvr54N4qTv3CKOIQTgeJMt'
+      export MLMMJADMIN_API_AUTH_TOKEN='kBlNlgcA0XDFf6OHK6SrTQ3iYSu1LlAx'
+      export NETDATA_DB_PASSWD='9q7iai9PcIu2GuVjOxtMWYyidp7hXwYr'
+      export PGSQL_ROOT_PASSWD='zoxWZWPEu4Yo'
+      export FIRST_DOMAIN='eyesecit.local'
+      export DOMAIN_ADMIN_PASSWD_PLAIN='zoxWZWPEu4Yo'
+      export USE_IREDADMIN='YES'
+      export USE_SOGO='YES'
+      export USE_NETDATA='YES'
+      export USE_FAIL2BAN='YES'
+      export AMAVISD_DB_PASSWD='0r6FsacHRpyyBmUWyj0pl8sjWsm4K81n'
+      export IREDADMIN_DB_PASSWD='McN2C0Ggi7UgNvlPkJ0PMD0qIo9Ua6Nq'
+      export RCM_DB_PASSWD='o9jPtDvpmaySI8y04VYzk1yMzrd5Cvqq'
+      export SOGO_DB_PASSWD='5yRVW4ChJx9BIjw03DMhbyyXYHM0sCZi'
+      export SOGO_SIEVE_MASTER_PASSWD='8c9P4HL9NKlCJj1K37w2gIps1RY6VPLw'
+      export IREDAPD_DB_PASSWD='AS1zRm9rQPMyt16uEB4AcsOIDUS51oS2'
+      export FAIL2BAN_DB_PASSWD='a76eQLWxgwXOUOrm6z4aleTFCr3t3rl7'
+      #EOF' > /tmp/iRedMail-1.6.3/config
+  - name: Deploy mail server
+    shell: |
+      echo 'export AUTO_USE_EXISTING_CONFIG_FILE=y
+      export AUTO_INSTALL_WITHOUT_CONFIRM=y
+      export AUTO_CLEANUP_REMOVE_SENDMAIL=y
+      export AUTO_CLEANUP_REPLACE_FIREWALL_RULES=y
+      export AUTO_CLEANUP_RESTART_FIREWALL=y
+      bash /tmp/iRedMail-1.6.3/iRedMail.sh' > /tmp/iRedMail_install.sh
+      sudo chmod 711 /tmp/iRedMail_install.sh
+      sudo /tmp/iRedMail_install.sh
+  - name: Restart server
+    reboot:

@@ -1,0 +1,25 @@
+- name: Installer et configurer ELK Stack
+  hosts: machines
+  become: true
+  become_method: su
+  roles:
+    - name: elastic.elasticsearch
+      vars:
+        es_heap_size: "1g"
+        es_data_dirs: ["/var/lib/elasticsearch"]
+        es_version: "7.9.2"  # Mettez à jour avec la version correcte
+        es_config:
+          cluster.name: my-cluster
+          node.name: node-1
+          network.host: 0.0.0.0
+          http.port: 9200
+          discovery.seed_hosts: ["node-1"]
+          cluster.initial_master_nodes: ["node-1"]
+#   tasks:
+#      - name: Installer Elasticsearch
+#        apt:
+#          name: elasticsearch=7.9.0
+#          state: present
+#          update_cache: yes
+#          force: yes
+#          allow_downgrades: yes  # Ajoutez cette option

@@ -1,0 +1,22 @@
+{
+  "qa":[
+    "whois.registry.qa",
+    "No Data Found"
+  ],
+  "qc.com":[
+    "whois.centralnic.com",
+    "DOMAIN NOT FOUND"
+  ],
+  "qh.cn":[
+    "whois.cnnic.net.cn",
+    "No matching record"
+  ],
+  "qpon":[
+    "whois.nic.qpon",
+    "object does not exist"
+  ],
+  "quebec":[
+    "whois.nic.quebec",
+    "no matching objects found"
+  ]
+}

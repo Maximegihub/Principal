@@ -1,0 +1,21 @@
+Commandes terminal
+
+pwd: emplacement actuel
+ls: liste fichiers et dossier de l'emplacement
+cd: ouvre un emplacement
+tab: auto completion
+ctrl+r: recherche dans l'historique des commandes
+ctrl+a/e: Aller au début/fin de la ligne en cours
+--help: Affiche les paramètres de la commande
+mkdir: make directory
+\ : force le comportement d'un caractère en string
+touch: créer un fichier
+mv 'adresse fichier.extension' 'adresse dossier'/ : déplacer fichier vers dossier
+* : wildcard
+cp: copier
+rm: remove
+man 'commande': manuel d'une commande
+> : redirection (ex: envoyer résultat d'une commande dans un fichier)
+grep 'string' fichier: cherche la string dans un fichier
+cat/less/more: affiche un contenu
+alias nom_alias='commande de l'alias' = création alias

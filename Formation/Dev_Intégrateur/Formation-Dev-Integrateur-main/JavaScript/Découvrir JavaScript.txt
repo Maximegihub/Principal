@@ -1,0 +1,74 @@
+langage interpreté: script de text brut
+
+- unique ! excute n'importe ou : back end et front end
+- s'execute coté serveur
+
+
+Il peut s'executer dans: 
+-Le navaigateur
+-Le serveur NodeJs
+Moteur Java Script:
+	- V8 ( Chrome & Opéra) 
+	- SpiderMonkey ( firefgox)
+
+Etape d'un moteur js : 
+
+. Compliquées mais les bases sont simples :
+
+1) il lit le script
+2) il compile le script en langage machine 
+3) la machine exécute le code rapidement 
+
+Que peut faire JavacScript dans le navigateur:
+
+- le navigateur est un environement sur 
+- aucun accès direct CPU,mémoire ou HDD
+- Son champs d'action est centré autour de trois grands axes : 
+	1: manipulation des pages web
+	2: intéraction avec les utilisateurs
+	3: intéraction avec le serveur web 
+
+EXEMPLE :
+
+AJouter du html, modifier du contenu, agir sur le style 
+Réagir au différences action , clik, mouvement, pression des touches
+Envoyer des requetes réseauxn download, upload des fichiers 
+Agir sur les cookies, afficher des messages
+Stocker des données côté client ( local storage) 
+
+
+Ne peut pas : 
+	acceder au disque lecture et écriture 
+	récupérer des fichiers sans l'accord de l'utilisateur 
+	intéragir avec la caméra et le micro sans autorisation 
+	
+Les Plus : 
+
+Intégration complete du html et cs
+Supporté et activé par défaut dans les principaux navigateur
+Principal outil pour créer des interfaces utilisateur 
+
+Peut faire : 
+
+- frontend
+- backend
+- Application multiplateforme
+- application mobiles 
+
+
+Langages par dessus JavaScript : 
+
+- des surcouches de JavaScript on été créés:
+	-CoffeeScript (sucre syntaxique)
+	-Typescript (typage strict - Microsoft)
+	-Flow (typage strict - Facebook)
+	-Dart (langage orienté apps - Google) 
+
+En résumé : 
+
+- Crée pour le navigateur au départ
+- Aujourdhui utiisé dans de nombreux environnement
+- Langage parmi les plus populaire au monde
+- Intégration complété html/css (la sainte trinité du web)
+- Il existe d'autre langaes qui sont transpillés en Java Script 
+

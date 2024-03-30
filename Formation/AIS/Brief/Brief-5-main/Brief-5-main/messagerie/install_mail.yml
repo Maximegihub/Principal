@@ -1,0 +1,112 @@
+---
+- name: Install Docker and Docker Compose
+  hosts: TARGET
+  become: yes
+  become_method: su
+  tasks:
+    - name: Install required packages
+      apt:
+        name: ['apt-transport-https', 'ca-certificates', 'curl', 'gnupg', 'software-properties-common']
+        update_cache: yes
+
+    - name: Add Docker GPG key
+      apt_key:
+        url: https://download.docker.com/linux/debian/gpg
+        state: present
+
+    - name: Add Docker repository
+      apt_repository:
+        repo: deb [arch=amd64] https://download.docker.com/linux/debian buster stable
+        state: present
+
+    - name: Install Docker and Docker Compose
+      apt:
+        name: ['docker-ce', 'docker-ce-cli', 'containerd.io']
+        state: present
+
+    - name: Install sudo package
+      apt:
+        name: sudo
+        state: present
+
+- name: Configure and start Mailserver Docker container
+  hosts: all
+  become: yes
+  tasks:
+    - name: Create the data directory for Mailserver
+      file:
+        path: /home/mail
+        state: directory
+
+    - name: Run Mailserver Docker container
+      command: |
+        docker run \
+        --net=host \
+        -e TZ=Europe/Prague \
+        -v /home/mail:/data \
+        --name "mailserver" \
+        -h "mail.ais-simplon-lil.cloudns.ph" \
+        -e "HTTP_PORT=8080" \
+        -e "HTTPS_PORT=4433" \
+        -e "DISABLE_RSPAMD=TRUE" \
+        -e "DISABLE_CLAMAV=TRUE" \
+        -t analogic/poste.io
+      ignore_errors: yes
+      register: docker_result
+
+    - name: Start the Mailserver Docker container
+      command: docker start mailserver
+      when: docker_result is failed
+
+- name: Install and configure Nginx
+  hosts: all
+  become: yes
+  tasks:
+    - name: Install Nginx
+      apt:
+        name: nginx
+        state: present
+
+    - name: Create Nginx configuration for Mailserver
+      template:
+        src: templates/nginx_mail.conf.j2
+        dest: /etc/nginx/sites-available/mail
+      notify:
+        - Reload Nginx
+
+    - name: Enable Nginx configuration for Mailserver
+      file:
+        src: /etc/nginx/sites-available/mail
+        dest: /etc/nginx/sites-enabled/mail
+        state: link
+      notify:
+        - Reload Nginx
+
+  handlers:
+    - name: Reload Nginx
+      service:
+        name: nginx
+        state: reloaded
+
+- name: Install Certbot and obtain SSL certificate
+  hosts: all
+  become: yes
+  tasks:
+    - name: Install snapd package
+      apt:
+        name: snapd
+        state: present
+
+    - name: Install Certbot via Snap
+      shell: snap install core; snap refresh core; snap install --classic certbot
+      args:
+        creates: /snap/bin/certbot
+
+    - name: Create symlink for Certbot
+      file:
+        src: /snap/bin/certbot
+        dest: /usr/bin/certbot
+        state: link
+
+    - name: Obtain SSL certificate with Certbot
+      shell: certbot --nginx -d mail.ais-simplon-lil.cloudns.ph

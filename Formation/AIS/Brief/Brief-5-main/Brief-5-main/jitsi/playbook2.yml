@@ -1,0 +1,112 @@
+- name: Installation de Jitsi Meet
+  hosts: all
+  become: true
+  become_method: su
+  tasks:
+    - name: Changer le hostname
+      hostname:
+        name: "jitsi.nomdedomaine"
+
+    - name: Ouvrir les ports 80, 443, 4443, 10000
+      ufw:
+        rule: allow
+        port: "{{ item }}"
+        state: enabled
+      loop:
+        - 80
+        - 443
+        - 4443
+        - 10000
+
+    - name: Activer le pare-feu
+      ufw:
+        state: enabled
+
+    - name: Installer les dépendances
+      apt:
+        name: "{{ item }}"
+        state: present
+      loop:
+        - gnupg2
+        - nginx-full
+        - curl
+        - wget
+        - apt-transport-https
+        - openjdk-11-jdk
+        - openjdk-11-jre
+        - lua5.2
+        - certbot
+        - python3-certbot-nginx
+
+    - name: Ajouter le dépôt Prosody
+      lineinfile:
+        dest: /etc/apt/sources.list
+        line: "deb http://packages.prosody.im/debian focal main"
+        state: present
+
+    - name: Importer la clé GPG de Prosody
+      shell: wget https://prosody.im/files/prosody-debian-packages.key -O- | sudo apt-key add -
+
+    - name: Télécharger la clé GPG de Jitsi
+      shell: curl https://download.jitsi.org/jitsi-key.gpg.key | sudo sh -c 'gpg --dearmor > /usr/share/keyrings/jitsi-keyring.gpg'
+
+    - name: Ajouter le dépôt Jitsi stable
+      lineinfile:
+        dest: /etc/apt/sources.list.d/jitsi-stable.list
+        line: "deb [signed-by=/usr/share/keyrings/jitsi-keyring.gpg] https://download.jitsi.org stable/"
+        state: present
+
+    - name: Mettre à jour les dépôts
+      apt:
+        update_cache: true
+
+    - name: Installer les paquets jitsi-meet-prosody, jitsi-meet-turnserver et jitsi-meet
+      apt:
+        name:
+          - jitsi-meet-prosody
+#          - jitsi-meet-turnserver
+#          - jitsi-meet
+        state: present
+
+    - name: Ajouter les certificats TLS
+      command: "/usr/share/jitsi-meet/scripts/install-letsencrypt-cert.sh"
+
+    - name: Configurer l'authentification des utilisateurs
+      lineinfile:
+        dest: "/etc/prosody/conf.avail/{{ jitsi_domain }}.cfg.lua"
+        line: "    authentication = 'internal_plain'"
+        state: present
+        insertafter: 'VirtualHost "{{ jitsi_domain }}"'
+
+    - name: Configurer les invités anonymes
+      lineinfile:
+        dest: "/etc/prosody/conf.avail/{{ jitsi_domain }}.cfg.lua"
+        line: |
+          VirtualHost "guest.{{ jitsi_domain }}"
+              authentication = "anonymous"
+              c2s_require_encryption = false
+        state: present
+        insertafter: 'VirtualHost "{{ jitsi_domain }}"'
+
+    - name: Configurer le fichier de configuration Jitsi Meet
+      lineinfile:
+        dest: "/etc/jitsi/meet/{{ jitsi_domain }}-config.js"
+        line: "    anonymousdomain: 'guest.{{ jitsi_domain }}',"
+        state: present
+        insertafter: 'anonymousdomain:'
+
+    - name: Configurer l'URL d'authentification dans Jicofo
+      lineinfile:
+        dest: "/etc/jitsi/jicofo/sip-communicator.properties"
+        line: "org.jitsi.jicofo.auth.URL=XMPP:{{ jitsi_domain }}"
+        state: present
+
+    - name: Redémarrer les services Jitsi Meet
+      systemd:
+        name: "{{ item }}"
+        state: restarted
+      loop:
+        - prosody.service
+        - jicofo.service
+        - jitsi-videobridge2.service
+        - nginx.service

@@ -1,0 +1,26 @@
+---
+- name: Backup and Export Databases
+  hosts: master_machine
+  become: yes
+  tasks:
+    - name: Create backup directory
+      file:
+        path: /path/to/backup/directory
+        state: directory
+      tags: backup
+
+    - name: Backup PostgreSQL database
+      postgresql_db_backup:
+        login_host: localhost
+        login_user: postgres
+        db_name: your_database_name
+        backup_dir: /path/to/backup/directory
+      tags: backup
+
+    - name: Copy backup files to remote machine
+      copy:
+        src: /path/to/backup/directory
+        dest: /path/on/remote/machine
+        remote_src: yes
+      delegate_to: remote_machine
+      tags: backup

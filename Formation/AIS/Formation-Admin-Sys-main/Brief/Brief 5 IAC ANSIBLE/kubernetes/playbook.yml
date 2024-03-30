@@ -1,0 +1,23 @@
+---
+- name: Déploiement de Kubernetes sur une machine virtuelle Proxmox
+  hosts: proxmox
+  gather_facts: false
+  
+  tasks:
+    - name: Installer les paquets Kubernetes
+      apt:
+        name: "{{ item }}"
+        state: present
+        update_cache: yes
+      loop:
+        - kubelet
+        - kubeadm
+        - kubectl
+      become: true
+      
+    - name: Démarrer le service kubelet
+      service:
+        name: kubelet
+        state: started
+        enabled: yes
+      become: true

@@ -1,0 +1,243 @@
+// Fonts
+$m-f: "Poppins",
+sans-serif;
+// Colors
+$m-c: #122d3e;
+$s-c: #274961;
+
+@mixin g-c($m-c, $s-c) {
+  background: $m-c;
+  /* Old browsers */
+  background: -moz-linear-gradient(-90deg, $m-c 0%, $s-c 100%);
+  /* FF3.6+ */
+  background: -webkit-gradient(linear,
+      left left,
+      left right,
+      color-sleft(0%, $m-c),
+      color-sleft(100%, $s-c));
+  /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(-90deg, $m-c 0%, $s-c 100%);
+  /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(-90deg, $m-c 0%, $s-c 100%);
+  /* Opera 11.10+ */
+  background: -ms-linear-gradient(-90deg, $m-c 0%, $s-c 100%);
+  /* IE10+ */
+  background: linear-gradient(-90deg, $m-c 0%, $s-c 100%);
+  /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#122d3e', endColorstr='#274961', GradientType=0);
+  /* IE6-9 */
+}
+
+.nav-tabs {
+  width: 100%;
+  border-bottom: none;
+}
+
+.nav.nav-tabs.custom {
+  border-bottom: none;
+}
+
+.nav.nav-tabs.custom li a {
+  border-bottom: 0;
+  padding: 15px 40px;
+  font-family: "Poppins", sans-serif;
+  font-weight: 500;
+  text-transform: uppercase;
+  line-height: 27px;
+  font-size: 16px;
+  text-align: center;
+  position: relative;
+  top: 0;
+  color: #7e7e7e;
+  margin-right: 10px;
+  border-radius: 15px 15px 0 0;
+}
+
+.nav-tabs .nav-link:hover {
+  border: 1px solid #e7e7e7;
+}
+
+a.nav-link.active {
+  color: #333 !important;
+}
+
+.nav-tabs .nav-item.show .nav-link,
+.nav-tabs .nav-link.active {
+  border-top: 1px solid #e7e7e7;
+  border-right: 1px solid #e7e7e7;
+  border-left: 1px solid #e7e7e7;
+}
+
+.plans-style-tab.nav-tabs .nav-item.show .nav-link,
+.plans-style-tab.nav-tabs .nav-link.active {
+  @include g-c($m-c, $s-c);
+  color: #fff !important;
+  border: 0;
+}
+
+.nav.nav-tabs.custom li a img {
+  width: 36px;
+  margin-right: 15px;
+}
+
+.tab-content.custom {
+  float: left;
+  background: #fff;
+  width: 100%;
+}
+
+.tab-content.custom+.wdes-general-tabs-position-left,
+.tab-content.custom+.wdes-general-tabs-position-right {
+  width: 80%;
+}
+
+
+/* Tabs Layout 1 */
+.plans-tabs {
+  margin: 0 auto 50px;
+  padding: 0;
+  text-align: center;
+  display: table;
+  width: 100%;
+}
+
+.plans-tabs li {
+  margin: 0 8px;
+  list-style: none;
+  display: inline-block;
+}
+
+.plans-tabs li a {
+  background: #fff;
+  border: 1px solid #e7e7e7 !important;
+  padding: 12px 35px;
+  border-radius: 25px;
+  font-family: $m-f;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.3s;
+  font-size: 13px;
+  color: $s-c;
+  border-top-right-radius: 25px !important;
+  border-top-left-radius: 25px !important;
+}
+
+.active-tabp {
+  color: #fff !important;
+}
+
+.plans-tabs a:focus {
+  color: #3897f0;
+}
+
+
+// Tabs
+.super-tabs-images {
+  text-align: center;
+
+  ul.wdes-testimonials-tab-head {
+    display: block;
+
+    li {
+      display: inline-block;
+      margin: 0 15px;
+
+      a {
+        background: #fff;
+        border-radius: 360px;
+        height: 70px;
+        width: 70px;
+        overflow: hidden;
+
+        img {
+          filter: none !important;
+          width: 70px !important;
+          height: 70px !important;
+          border: 0 !important;
+          border-radius: 0 !important;
+          padding: 14px;
+        }
+      }
+
+      a.nav-link.active {
+        background: #fff;
+        box-shadow: 0 0 20px #c5cadf;
+      }
+    }
+  }
+
+  .tab-pane {
+    background: #fff;
+    width: 50%;
+    margin: 50px auto 0;
+    border-radius: 4px;
+    padding: 40px;
+
+    h3 {
+      color: #2b35a0;
+      font-family: $m-f;
+      font-size: 22px;
+      font-weight: 700;
+      margin: 0;
+    }
+
+    p {
+      margin: 20px 0 0;
+      font-family: "Karla", sans-serif;
+      font-weight: 400;
+      font-size: 15px;
+      line-height: 26px;
+      color: #6d7d9a;
+    }
+  }
+
+  @media only screen and (min-width: 160px) and (max-width: 767px) {
+    .content-new-tab {
+      background: #fff;
+      width: 100%;
+    }
+
+    .wdes-testimonials-tab-head img {
+      margin-top: 0;
+    }
+
+    .tab-pane {
+      width: 100%;
+    }
+  }
+
+  .new-d-clr {
+    color: #36dbcf;
+  }
+
+  .brd-hc-new {
+    height: 3px;
+    width: 35px;
+    background: #36dbcf;
+    display: block;
+    margin: 15px 0;
+  }
+}
+
+.wdes-tabs ul li a {
+  cursor: pointer;
+}
+
+.wdes-half-col-tabs {
+  .nav-item {
+    width: 50%;
+  }
+}
+
+// Classy Demo
+.classy-plans-border-radius {
+  .wdes-tabs {
+    text-align: center;
+
+    .nav-tabs {
+      display: inline-block;
+      width: initial;
+      border-color: #c3c1ff;
+    }
+  }
+}
